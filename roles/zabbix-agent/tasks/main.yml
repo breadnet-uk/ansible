@@ -1,0 +1,13 @@
+---
+   # - debug: var=ansible_facts
+    - debug:
+        msg: "{{ ansible_facts['nodename'] }}"
+
+
+    #- name: Install Zabbix agent
+    #  become: true
+    #  apt: name=zabbix-agent update_cache=yes state=latest
+   # 
+    #- name: Get the hostname
+    #  shell: hostname
+
