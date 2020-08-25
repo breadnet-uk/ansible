@@ -1,0 +1,79 @@
+---
+    #- name: Install prerequisites
+    #  become: true
+    #  apt: name=aptitude update_cache=yes state=latest force_apt_get=yes
+        
+ 
+    - name: Install useful applications
+      apt: name ={{ item }} update_cache=yes state=latest
+      loop: ['curl', 'wget', 'vim', 'git', 'socat', 'iperf']
+      tags: [install]
+
+    - name: Install unzip because bigbrain
+      apt: name=unzip update_cache=yes state=latest
+      tags: [unzip]
+
+    - name: Create Matomo database
+      mysql_db:
+        name: "{{ matomo_mysql_db }}"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+      tags: [ mysqlcreatedb ]
+
+    - name: Create MySQL user for Matomo
+      mysql_user:
+        name: "{{ matomo_mysql_user }}"
+        password: "{{ matomo_mysql_password }}"
+        priv: "{{ matomo_mysql_db }}.*:ALL"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+      tags: [ mysqlcreateuser ]
+
+
+    - name: Set up nginx config file
+      template:
+        src: "files/matomo_nginx.j2"
+        dest: "/etc/nginx/sites-available/{{ matomo_web_address }}"
+      tags: [file]
+
+
+    - name: Create a symbolic link
+      file: 
+        src=/etc/nginx/sites-available/{{ matomo_web_address }} 
+        dest=/etc/nginx/sites-enabled/{{ matomo_web_address }} 
+        state=link
+
+    - name: reload Nginx
+      service: 
+        name: nginx
+        state: reloaded
+      tags: [done]  
+    - name: Restart Nginx
+      service:
+       name: nginx
+       state: restarted
+      tags: [done]
+
+    - name: Download Matomo Source files
+      unarchive:
+        src: https://builds.matomo.org/matomo.zip
+        dest: /var/www/
+        remote_src: yes
+      tags: [wget]
+
+    - file:
+        path: "/var/www/matomo"
+        recurse: yes
+        owner: www-data
+        group: www-data
+
+    - name: Display the config
+      debug:
+        msg: the variable is {{matomo_mysql_db}}
+      tags: [echo]
+
+
+
+

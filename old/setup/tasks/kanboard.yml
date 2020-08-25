@@ -1,0 +1,67 @@
+---
+#
+
+    - name: Create Kanboard database
+      mysql_db:
+        name: "{{ kan_mysql_db }}"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+      tags: [ mysqlcreatedb ]
+
+    - name: Create MySQL user for Matomo
+      mysql_user:
+        name: "{{ kan_mysql_user }}"
+        password: "{{ kan_mysql_password }}"
+        priv: "{{ kan_mysql_db }}.*:ALL"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+      tags: [ mysqlcreateuser ]
+
+    - name: Download the kanboard sauce files
+      unarchive:
+        src: https://github.com/kanboard/kanboard/archive/v{{ kanboard_version }}.tar.gz
+        dest: /var/www/
+        remote_src: yes
+      tags: [wget]
+    
+    - name: Rename kanboard file  
+      command: mv /var/www/kanboard-{{ kanboard_version }} /var/www/kanboard
+      tags: [mv]
+
+    - name: Set up config.php
+      template:
+        src: "files/kanboard_config.j2"
+        dest: "/var/www/kanboard/config.php"
+      tags: [config]
+
+    - file:
+        path: "/var/www/kanboard"
+        recurse: yes
+        owner: www-data
+        group: www-data
+      tags: [jank1]
+
+    - name: Set up nginx config file
+      template:
+        src: "files/kan_nginx.j2"
+        dest: "/etc/nginx/sites-available/{{ kan_web_address }}"
+      tags: [file]
+
+    - name: Create a symbolic link
+      file: 
+        src=/etc/nginx/sites-available/{{ kan_web_address }} 
+        dest=/etc/nginx/sites-enabled/{{ kan_web_address }} 
+        state=link
+
+    - name: reload Nginx
+      service: 
+        name: nginx
+        state: reloaded
+      tags: [done]  
+    - name: Restart Nginx
+      service:
+       name: nginx
+       state: restarted
+      tags: [done]

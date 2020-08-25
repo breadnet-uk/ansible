@@ -1,0 +1,92 @@
+---
+- include: reboot.yml
+  become: yes
+  when:
+     - reboot|bool
+       
+- include: nginx.yml
+  become: yes
+  delegate_to: app2
+  when: 
+     #- inventory_hostname in groups['app1']
+     #- inventory_hostname in groups['app2']
+     #- inventory_hostname == app[1]
+     #- inventory_hostname in groups['app1']|default([])
+     - nginx|bool
+  tags:
+      - nginx
+
+- include: mysql.yml
+  become: yes
+  delegate_to: app1
+  when: 
+     #- inventory_hostname in groups['app1']
+     #- inventory_hostname in groups['app2']
+     - mysql|bool
+  tags:
+      - mysql
+
+- include: php7.2.yml
+  become: yes
+  when: 
+     - inventory_hostname in groups['app1']
+     - inventory_hostname in groups['app2']
+     - php72|bool
+  tags:
+      - php
+
+- include: matomo.yml
+  become: yes
+  when: 
+     - matomo|bool
+     - inventory_hostname in groups['app1']
+  tags:
+      - matomo
+
+- include: ghost.yml
+  become: yes
+  when: 
+     - ghost|bool
+     - inventory_hostname in groups['app1']
+  tags:
+      - ghost
+
+- include: kanboard.yml
+  become: yes
+  when: 
+     - kanboard|bool
+     - inventory_hostname in groups['app1']
+  tags:
+      - kanboard
+
+- include: bookstack.yml
+  become: yes
+  when: 
+     - bookstack|bool
+     - inventory_hostname in groups['app1']
+  tags:
+      - bookstack
+
+- include: status.yml
+  become: yes
+  when: 
+     - status|bool
+     - inventory_hostname in groups['app1']
+  tags:
+      - status
+
+- include: jellyfin.yml
+  become: yes
+  when: 
+     - jellyfin|bool
+     - inventory_hostname in groups['app3']
+  tags:
+      - jellyfin
+
+- include: zabbix.yml
+  become: yes
+  when: 
+     - zabbix|bool
+     - inventory_hostname in groups['app3']
+  tags:
+      - zabbix

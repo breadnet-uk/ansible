@@ -1,0 +1,13 @@
+---
+bookstack_mysql_db: "bookstack"
+bookstack_mysql_user: "bookstack"
+bookstack_mysql_password: "klerhwerklhwekofyherg54r6g4r6g1wef6g54erg64rg65f4g6f"
+bookstack_url: "bookstack.breadnet.co.uk" #URL of your bookstack instance, like bookstack.breadnet.co.uk
+bookstack_domain: "bookstack.breadnet.co.uk" #your domain, like breadnet.co.uk 
+bookstack_name: "Bookstack" #Give your bookstack a name, call it jeff
+bookstack_protocal: "http" #http or https
+bookstack_mail_driver: "smtp" #can be smtp, mail or sendmail
+bookstack_mail_server: "172.16.16.251" #IP address of your mail server or hostname, or local host
+bookstack_mail_port: "25" #usually 25 but can differ 
+bookstack_mail_username: "" #name you use to login to the mails erver
+bookstack_mail_password: "" #Password you use to login to the server

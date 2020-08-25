@@ -1,0 +1,12 @@
+---
+status_web_address: "status.breadnet.co.uk"
+status_mysql_db: "status"
+status_mysql_user: "status"
+status_mysql_password: "status"
+status_mail_driver: "smtp"
+status_mail_host: "mail.bread"
+status_mail_port: "25"
+status_mail_username: ""
+status_mail_password: ""
+status_mail_address: "status@breadnet.co.uk"
+status_mail_name: ""

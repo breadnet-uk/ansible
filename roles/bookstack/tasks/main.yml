@@ -1,0 +1,134 @@
+    - name: Download Composer and ensure it's legit
+      script: scripts/inscomp.sh
+      tags: [composer]
+
+
+    - name: Move composer so we can call it anywhere
+      become: true
+      command: mv composer.phar /usr/local/bin/composer
+      tags: [composer]
+
+    - git:
+       repo: 'https://github.com/BookStackApp/BookStack.git'
+       dest: /var/www/{{ install_location }}
+       version: release
+      tags: [git]
+    
+    - composer:
+        command: install
+        working_dir: /var/www/{{ install_location }}
+      tags: [composerinstall]
+
+
+  #  - name: create a database for bookstack to use
+  #    mysql_db:
+  #      name: "{{ bookstack_mysql_db }}"
+  #      state: present
+  #      login_user: root
+  #      login_password: "{{ mysql_root_password }}"
+  #    tags: [ mysql ]
+
+    #- name: Create MySQL user for bookstack
+    #  mysql_user:
+    #    name: "{{ bookstack_mysql_user }}"
+    #    password: "{{ bookstack_mysql_password }}"
+    #    priv: "{{ bookstack_mysql_db }}.*:ALL"
+    #    state: present
+    #    login_user: root
+    #    login_password: "{{ mysql_root_password }}"
+    #  tags: [ mysql ]
+
+    - name: Update php.ini File uploads
+      replace:
+        dest: "/etc/php/7.2/fpm/php.ini"
+        regexp: '^file_uploads.*$'
+        replace: 'file_uploads = On'
+        backup: yes 
+      tags: [php]
+
+    - name: Update php.ini allow_url_fopen
+      replace:
+        dest: "/etc/php/7.2/fpm/php.ini"
+        regexp: '^allow_url_fopen.*$'
+        replace: 'allow_url_fopen = On'
+        backup: yes 
+      tags: [php]
+
+    - name: Update php.ini memory_limit
+      replace:
+        dest: "/etc/php/7.2/fpm/php.ini"
+        regexp: '^memory_limit.*$'
+        replace: 'memory_limit = 256M'
+        backup: yes 
+      tags: [php]
+
+    - name: Update php.ini upload_max_filesize
+      replace:
+        dest: "/etc/php/7.2/fpm/php.ini"
+        regexp: '^upload_max_filesize.*$'
+        replace: 'upload_max_filesize = 100M'
+        backup: yes 
+      tags: [php]
+
+    - name: Update php.ini cgi.fix_pathinfo
+      replace:
+        dest: "/etc/php/7.2/fpm/php.ini"
+        regexp: '^cgi.fix_pathinfo.*$'
+        replace: 'cgi.fix_pathinfo = 0'
+        backup: yes 
+      tags: [php]
+
+    - name: Update php.ini max_execution_time
+      replace:
+        dest: "/etc/php/7.2/fpm/php.ini"
+        regexp: '^max_execution_time.*$'
+        replace: 'max_execution_time = 360'
+        backup: yes 
+      tags: [php]
+
+    - name: Set up .env file
+      template:
+        src: "files/bookstack_env.j2"
+        dest: "/var/www/{{ install_location }}/.env"
+      tags: [artis]
+
+    - name: Run php artisan key generate
+      shell: php /var/www/{{ install_location }}/artisan key:generate --force
+      tags: [artis]
+
+    - name: Run php artisan migrate
+      shell: php /var/www/{{ install_location }}/artisan migrate --force
+      tags: [migrate]
+
+    - file:
+        path: "/var/www/{{ install_location }}"
+        recurse: yes
+        owner: www-data
+        group: www-data
+      tags: [jank1]
+
+    - name: Set up nginx config file
+      template:
+        src: "files/bookstack_nginx.j2"
+        dest: "/etc/nginx/sites-available/{{ bookstack_url }}"
+      tags: [file]
+
+
+    - name: Create a symbolic link
+      file: 
+        src=/etc/nginx/sites-available/{{ bookstack_url }} 
+        dest=/etc/nginx/sites-enabled/{{ bookstack_url }} 
+        state=link
+      #state: link
+      tags: [fileconf]
+     
+    - name: reload Nginx
+      service: 
+        name: nginx
+        state: reloaded
+      tags: [done]  
+    - name: Restart Nginx
+      service:
+       name: nginx
+       state: restarted
+      tags: [done]

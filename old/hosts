@@ -1,0 +1,7 @@
+#Probably not how this is meant to be set out but this seemed to work for me
+[app1]
+app1 ansible_host=10.0.31.198
+[app2]
+app2 ansible_host=10.0.31.188
+[app3]
+app3 ansible_host=10.0.31.179

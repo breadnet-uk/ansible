@@ -1,0 +1,101 @@
+---
+#https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-zabbix-to-securely-monitor-remote-servers-on-ubuntu-18-04#step-1-—-installing-the-zabbix-server
+#https://gist.github.com/mwalczak/9807459
+
+    - name: Install a .deb package from the internet.
+      apt:
+        deb: https://repo.zabbix.com/zabbix/4.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_4.2-1+bionic_all.deb   
+
+    - name: Update repositories
+      become: true
+      apt:
+       update_cache: yes
+
+    - include: mysql.yml
+      become: yes
+  
+    - name: Install zabbix-server-mysql #Move to a global install
+      become: true
+      apt: name=zabbix-server-mysql update_cache=yes state=latest
+
+
+    - name: Install zabbix-frontend-php #Move to a global install
+      become: true
+      apt: name=zabbix-frontend-php update_cache=yes state=latest
+
+
+    - name: Install zabbix-agent #Move to a global install
+      become: true
+      apt: name=zabbix-agent update_cache=yes state=latest
+
+
+    - name: Install unzip #Move to a global install
+      become: true
+      apt: name=unzip update_cache=yes state=latest
+
+
+    - name: create a database for zabbix to use
+      mysql_db:
+        name: "{{ zabbix_mysql_db }}"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+
+
+    - name: Create MySQL user for zabbix
+      mysql_user:
+        name: "{{ zabbix_mysql_user }}"
+        password: "{{ zabbix_mysql_password }}"
+        priv: "{{ zabbix_mysql_db }}.*:ALL"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+
+
+    - name: Restore database
+      mysql_db:
+       name: "{{ zabbix_mysql_db }}"
+       login_user: root
+       login_password: "{{ mysql_root_password }}"
+       state: import
+       target: /usr/share/doc/zabbix-server-mysql/create.sql.gz
+
+    - name: update db password 
+      replace:
+        dest: "/etc/zabbix/zabbix_server.conf"
+        regexp: '^# DBPassword=.*$'
+        replace: 'DBPassword={{ zabbix_mysql_user }}'
+        backup: yes 
+
+    - name: update db password 
+      replace:
+        dest: "/etc/zabbix/apache.conf"
+        regexp: '^(.*php_value date.*)'
+        replace: '        php_value date.timezone Europe/London'
+        backup: yes 
+
+    - name: Set up nginx config file
+      template:
+        src: "files/zabbix_apache2.j2"
+        dest: "/etc/apache2/sites-available/000-default.conf"
+      tags: [donefile]  
+
+    - name: reload Apache2
+      service: 
+        name: apache2
+        state: reloaded
+      tags: [donefile]
+    - name: Restart Apache2
+      service:
+       name: apache2
+       state: restarted
+      tags: [donefile]
+    - name: Start Zabbix server
+      service:
+       name: zabbix-server
+       state: started
+
+    - name: Start Zabbix server
+      service:
+       name: zabbix-agentcd
+       state: started

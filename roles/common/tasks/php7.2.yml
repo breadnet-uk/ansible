@@ -1,0 +1,92 @@
+---
+    - name: Add PHP repository 
+      become: true
+      apt_repository:
+       repo: 'ppa:ondrej/php'
+      tags: [php]
+
+    - name: Update repositories
+      become: true
+      apt:
+       update_cache: yes
+      tags: [php]
+
+   # - name: Install php7.2 #Move to a global install
+   #   become: true
+   #   apt: name=php7.2 update_cache=yes state=latest
+   #   tags: [php]
+
+    - name: Install php7.2-cli #Move to a global install
+      become: true
+      apt: name=php7.2-cli update_cache=yes state=latest
+      tags: [php]
+
+    - name: Install php7.2-common #Move to a global install
+      become: true
+      apt: name=php7.2-common update_cache=yes state=latest
+      tags: [php]
+
+    - name: Install php7.2-curl #Move to a global install
+      become: true
+      apt: name=php7.2-curl update_cache=yes state=latest
+      tags: [php]
+
+    - name: Install php7.2-fpm #Move to a global install
+      become: true
+      apt: name=php7.2-fpm update_cache=yes state=latest
+      tags: [php]
+
+    - name: Install php7.2-xml #Move to a global install
+      become: true
+      apt: name=php7.2-xml update_cache=yes state=latest
+      tags: [php]
+
+    - name: Install php7.2-gd #Move to a global install
+      become: true
+      apt: name=php7.2-gd update_cache=yes state=latest
+      tags: [php]
+
+    - name: Install php7.2-mbstring #Move to a global install
+      become: true
+      apt: name=php7.2-mbstring update_cache=yes state=latest
+      tags: [php]
+
+    - name: Install php7.2-mysql #Move to a global install
+      become: true
+      apt: name=php7.2-mysql update_cache=yes state=latest
+      tags: [php]
+
+    - name: Install php7.2-tidy #Move to a global install
+      become: true
+      apt: name=php7.2-tidy update_cache=yes state=latest
+      tags: [php]
+
+    - name: Install php7.2-curl #Move to a global install
+      become: true
+      apt: name=php7.2-curl update_cache=yes state=latest
+      tags: [php]
+
+    - name: Install php7.2-zip #Move to a global install
+      become: true
+      apt: name=php7.2-zip update_cache=yes state=latest
+      tags: [php]
+
+    - name: Install php7.2-pgsql #Move to a global install
+      become: true
+      apt: name=php7.2-pgsql update_cache=yes state=latest
+      tags: [php]
+
+    - name: Install php7.2-sqlite3 #Move to a global install
+      become: true
+      apt: name=php7.2-sqlite3 update_cache=yes state=latest
+      tags: [php]
+
+    - name: Install php7.2-opcache #Move to a global install
+      become: true
+      apt: name=php7.2-opcache update_cache=yes state=latest
+      tags: [php]
+
+    - name: Install php-apcu #Move to a global install
+      become: true
+      apt: name=php-apcu update_cache=yes state=latest
+      tags: [php]

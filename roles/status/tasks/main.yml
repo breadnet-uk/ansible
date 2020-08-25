@@ -1,0 +1,75 @@
+---
+    - git:
+       repo: 'https://github.com/cachethq/Cachet.git'
+       dest: /var/www/status
+       version: 2.4
+      tags: [git]
+
+    - name: Set up .env file
+      template:
+        src: "files/status.env.j2"
+        dest: "/var/www/status/.env"
+
+    - file:
+        path: "/var/www/status"
+        recurse: yes
+        owner: www-data
+        group: www-data
+
+    - name: create a database for Status to use
+      mysql_db:
+        name: "{{ status_mysql_db }}"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+      tags: [ mysql ]
+
+    - name: Create MySQL user for Status
+      mysql_user:
+        name: "{{ status_mysql_user }}"
+        password: "{{ status_mysql_password }}"
+        priv: "{{ status_mysql_db }}.*:ALL"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+      tags: [ mysql ]
+
+
+    - composer:
+        command: install
+        arguments: --no-dev -o
+        working_dir: /var/www/status
+      tags: [composerinstallstatus]
+      
+    - name: Run php artisan key generate
+      shell: php /var/www/status/artisan key:generate --force
+      tags: [artis]
+
+    - name: Run php artisan migrate
+      shell: php /var/www/status/artisan cachet:install -n
+      tags: [migrate]
+
+    - name: Set up nginx config file
+      template:
+        src: "files/status.j2"
+        dest: "/etc/nginx/sites-available/{{ status_web_address }}"
+      tags: [file]      
+
+    - name: Create a symbolic link
+      file: 
+        src=/etc/nginx/sites-available/{{ status_web_address }} 
+        dest=/etc/nginx/sites-enabled/{{ status_web_address }} 
+        state=link
+      #state: link
+      tags: [fileconf]
+     
+    - name: reload Nginx
+      service: 
+        name: nginx
+        state: reloaded
+      tags: [done]  
+    - name: Restart Nginx
+      service:
+       name: nginx
+       state: restarted
+      tags: [done]

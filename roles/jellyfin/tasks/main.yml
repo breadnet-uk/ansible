@@ -1,0 +1,16 @@
+---
+    - name: Add universe
+      shell: sudo add-apt-repository universe
+
+    - name: add GPG key
+      shell: wget -O - https://repo.jellyfin.org/ubuntu/jellyfin_team.gpg.key | sudo apt-key add -
+
+    - name: Add repo
+      shell: echo "deb [arch=$( dpkg --print-architecture )] https://repo.jellyfin.org/ubuntu $( lsb_release -c -s ) main" | sudo tee /etc/apt/sources.list.d/jellyfin.list
+
+    - name: Apt-update the cool way
+      apt: name=aptitude update_cache=yes state=latest force_apt_get=yes
+
+    - name: Apt-update the cool way
+      apt: name=jellyfin update_cache=yes state=latest force_apt_get=yes
+

@@ -1,0 +1,35 @@
+    
+---
+    - name: Install Mysql server #Move to a global install
+      become: true
+      apt: name=mysql-server update_cache=yes state=latest force_apt_get=yes
+
+
+    - name: Install the Python MySQLB module  #Move to a global install
+      become: true
+      apt: name=python3-mysqldb
+
+
+    - name: Set root password for Mysql
+      mysql_user:
+        name: root
+        password: "{{ mysql_root_password }}"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+
+    - name: Remove Anon users from Mysql
+      mysql_user:
+        name: ''
+        host_all: yes
+        state: absent
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+
+
+    - name: Remove 'test' database from Mysql
+      mysql_db:
+        name: test
+        state: absent
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+ 

@@ -1,0 +1,7 @@
+---
+mysql_root_password: "PasswordIsInsecure"
+kan_mysql_db: "kanboard"
+kan_mysql_user: "kanboard"
+kan_mysql_password: "kanboard"
+kan_web_address: "kan.breadnet"
+kanboard_version: "1.2.15"

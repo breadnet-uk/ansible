@@ -1,0 +1,14 @@
+---
+- name: Setup app
+  hosts: bookstack
+  become: yes
+
+  roles:
+    #- reboot
+     - common
+     - nginx
+     - bookstack
+    # - kanboard
+    # - status
+    # - jellyfin
+    # - mysql

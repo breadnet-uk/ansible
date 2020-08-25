@@ -1,0 +1,7 @@
+---
+- name: Setup app
+  hosts: app1
+  become: yes
+
+  roles:
+    - nginx

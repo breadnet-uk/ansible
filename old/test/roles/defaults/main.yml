@@ -1,0 +1,77 @@
+---
+######################
+#app1                #
+matomo: false         #
+ghost: false         #  
+kanboard: false      #
+status: false        #
+month: false         #
+redirect: false      #
+                     #
+#app2                #
+bookstack: false     #
+firefly: false       #
+passbolt: false      #
+nextcloud: false     #
+unifi: false         #
+                     #
+#app3                # 
+zabbix: false        # 
+jellyfin: false      #
+######################
+
+#Things to install first
+reboot: false
+nginx: true
+mysql: false
+php72: false
+
+#Global variables for all servers
+mysql_root_password: "PasswordIsInsecure"
+
+
+#matomo
+matomo_mysql_db: "matomo"
+matomo_mysql_user: "matomo"
+matomo_mysql_password: "matomo"
+matomo_web_address: "anal.breadnet.co.uk"
+
+#Kanboard
+kan_mysql_db: "kanboard"
+kan_mysql_user: "kanboard"
+kan_mysql_password: "kanboard"
+kan_web_address: "kan.breadnet"
+kanboard_version: "1.2.15"
+
+#Bookstack
+bookstack_mysql_db: "bookstack"
+bookstack_mysql_user: "bookstack"
+bookstack_mysql_password: "klerhwerklhwekofyherg54r6g4r6g1wef6g54erg64rg65f4g6f"
+bookstack_url: "bookstack.breadnet.co.uk" #URL of your bookstack instance, like bookstack.breadnet.co.uk
+bookstack_domain: "bookstack.breadnet.co.uk" #your domain, like breadnet.co.uk 
+bookstack_name: "Bookstack" #Give your bookstack a name, call it jeff
+bookstack_protocal: "http" #http or https
+bookstack_mail_driver: "smtp" #can be smtp, mail or sendmail
+bookstack_mail_server: "172.16.16.251" #IP address of your mail server or hostname, or local host
+bookstack_mail_port: "25" #usually 25 but can differ 
+bookstack_mail_username: "" #name you use to login to the mails erver
+bookstack_mail_password: "" #Password you use to login to the server
+
+#Status
+status_web_address: "status.breadnet.co.uk"
+status_mysql_db: "status"
+status_mysql_user: "status"
+status_mysql_password: "status"
+status_mail_driver: "smtp"
+status_mail_host: "mail.bread"
+status_mail_port: "25"
+status_mail_username: ""
+status_mail_password: ""
+status_mail_address: "status@breadnet.co.uk"
+status_mail_name: ""
+
+#Zabbix
+zabbix_mysql_user: "zabbix"
+zabbix_mysql_db: "zabbix"
+zabbix_mysql_password: "zabbix"
+zabbix_url: "zabbix.breadnet.co.uk"

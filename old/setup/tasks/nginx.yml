@@ -1,0 +1,7 @@
+---
+    - name: apt-update
+      #hosts: app1
+      apt: name=aptitude update_cache=yes state=latest force_apt_get=yes
+        
+    - name: Install nginx
+      apt: name=nginx update_cache=yes state=latest
