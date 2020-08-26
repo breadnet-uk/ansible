@@ -6,6 +6,7 @@
   - name: Run the equivalent of "apt-get update" as a separate step
     apt:
       update_cache: yes
+      dpkg_options: 'allow-releaseinfo-change'
 
   - name: Update all packages to the latest version
     apt:
