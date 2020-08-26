@@ -32,3 +32,5 @@ ansible-playbook -i hosts -l <pick a node if you want> -u <user to run as> <play
 
 ---
 This repo will hopefully start to grow a lot more as I expand on my ansible journey.
+---
+If you spot something that looks weird, feel free to open a PR
