@@ -1,3 +1,8 @@
+# breadNET ansible playbooks
+
+[![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
+
+---
 # What is this?
 This is a collection of all ansible playbooks and scripts I have accumulated over the ~~years~~ past few months
 
