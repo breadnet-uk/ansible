@@ -50,6 +50,7 @@
         name: nginx
         state: reloaded
       tags: [done]  
+      
     - name: Restart Nginx
       service:
        name: nginx
