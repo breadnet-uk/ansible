@@ -1,0 +1,7 @@
+---
+- name: Show all the ansible facts
+  hosts: test
+  become: yes
+
+  roles:
+     - audit
