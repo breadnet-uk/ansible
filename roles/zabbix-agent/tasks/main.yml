@@ -7,3 +7,14 @@
     - name: Install Zabbix agent
       become: true
       apt: name=zabbix-agent update_cache=yes state=latest
+
+    - name: Configure the Zabbix config file (Internal)
+      template:
+        src: "files/zabbix_agent_internal.j2"
+        dest: "/etc/zabbix/zabbix_agentd.conf"
+      
+    - name: Restart Zabbix
+      service:
+       name: zabbix-agent
+       state: restarted
+      tags: [done]
