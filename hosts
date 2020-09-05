@@ -1,13 +1,2 @@
-[app1]
-#app1 ansible_host=10.0.31.248
-#[app2]
-#app2 ansible_host=10.0.31.217
-#[app3]
-#app3 ansible_host=10.0.31.220
-[all]
-dbserver1 ansible_host=10.0.31.70
-dbserver2 ansible_host=10.0.31.0
-[bookstack]
-bookstack1 ansible_host=10.0.31.1
 [test]
-bread-d1 ansible_host=127.0.0.1
+agent ansible_host=10.0.31.21
