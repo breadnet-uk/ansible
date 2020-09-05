@@ -3,5 +3,5 @@ LogFile=/var/log/zabbix-agent/zabbix_agentd.log
 LogFileSize=0
 Server=172.16.16.250
 ServerActive=172.16.16.250
-Hostname=' {{ ansible_facts['nodename'] }'
+Hostname={{ ansible_facts['nodename'] }}.bread
 EnableRemoteCommands=0
