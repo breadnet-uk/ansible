@@ -1,6 +1,6 @@
 ---
 - name: install zabbix agent (Internal)
-  #hosts: test
+  hosts: all
   become: yes
 
   roles:
