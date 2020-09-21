@@ -1,6 +1,6 @@
 # breadNET ansible playbooks
 
-[![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/y/breadnet-uk/ansible?style=for-the-badge) ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/breadnet-uk/ansible?style=for-the-badge) [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
 
 ---
 # What is this?
